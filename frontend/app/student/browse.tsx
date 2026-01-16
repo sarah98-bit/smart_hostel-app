@@ -21,7 +21,7 @@ export default function RoomBrowseScreen() {
   useEffect(() => {
     const loadCSV = async () => {
       try {
-        const asset = Asset.Asset.fromModule(require("../../assets/images/dkut-hostels.csv"));
+        const asset = Asset.Asset.fromModule(require("../../assets/data/dkut_hostels.csv"));
         await asset.downloadAsync();
         const fileContent = await FileSystem.readAsStringAsync(asset.localUri || "");
         const parsed = Papa.parse(fileContent, { header: true });

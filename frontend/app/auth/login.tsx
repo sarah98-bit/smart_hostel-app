@@ -16,26 +16,23 @@ import { useRouter } from "expo-router";
 // Helper to check if input is email
 const isEmail = (text: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
 
-// Helper to validate DKUT email
-const isValidSchoolEmail = (email: string) => {
-  return (
-    email.endsWith("@students.dkut.ac.ke") || email.endsWith("@dkut.ac.ke")
-  );
-};
+// Helper to validate only DKUT emails
+const isValidSchoolEmail = (email: string) =>
+  email.endsWith("@students.dkut.ac.ke") || email.endsWith("@dkut.ac.ke");
 
-// Mock login
+// Temporary mock login (until backend is ready)
 const mockLogin = async (identifier: string, password: string) => {
   const isUserEmail = isEmail(identifier);
 
   if (isUserEmail && !isValidSchoolEmail(identifier)) {
-    throw new Error("Please use a valid DKUT school email address");
+    throw new Error("Please use a valid DKUT email address");
   }
 
   if (password.length < 6) {
     throw new Error("Password must be at least 6 characters");
   }
 
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+  await new Promise((resolve) => setTimeout(resolve, 800));
 
   // Determine role
   let role = "student";
@@ -59,17 +56,20 @@ export default function LoginScreen() {
     }
 
     setLoading(true);
+
     try {
       const user = await mockLogin(identifier, password);
-      Alert.alert("✅ Login Successful", `Welcome ${user.role}!`);
 
+      Alert.alert("Login Successful", `Welcome ${user.role}!`);
+
+      
       if (user.role === "admin") {
         router.replace("/admin/dashboard");
       } else {
         router.replace("/student/dashboard");
       }
     } catch (err: any) {
-      Alert.alert("❌ Login Failed", err.message || "Invalid credentials");
+      Alert.alert("Login Failed", err.message || "Invalid credentials");
     } finally {
       setLoading(false);
     }
@@ -83,6 +83,7 @@ export default function LoginScreen() {
         resizeMode="cover"
       >
         <View style={styles.overlay} />
+
         <View style={styles.content}>
           <AuthHeader
             title="Welcome Back 👋"
@@ -105,16 +106,17 @@ export default function LoginScreen() {
             onChangeText={setPassword}
           />
 
-          <Button title={loading ? "Logging in..." : "Login"} onPress={handleLogin} />
+          <Button
+            title={loading ? "Logging in..." : "Login"}
+            onPress={handleLogin}
+          />
 
           <TouchableOpacity onPress={() => router.push("/auth/forgot-password")}>
             <Text style={styles.link}>Forgot Password?</Text>
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => router.push("/auth/register")}>
-            <Text style={styles.linkSecondary}>
-              Don't have an account? Register
-            </Text>
+            <Text style={styles.linkSecondary}>Don't have an account? Register</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -127,7 +129,7 @@ const styles = StyleSheet.create({
   background: { flex: 1, justifyContent: "center" },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(238, 241, 238, 0.45)",
+    backgroundColor: "rgba(0,0,0,0.25)",
   },
   content: { padding: 20, justifyContent: "center" },
   link: {

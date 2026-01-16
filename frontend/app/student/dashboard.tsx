@@ -21,6 +21,7 @@ export default function StudentDashboard() {
 
       {/* Cards */}
       <View style={styles.cardContainer}>
+      
         <Card
           title="🏠 Browse Hostels"
           subtitle="View available hostels and book your room."

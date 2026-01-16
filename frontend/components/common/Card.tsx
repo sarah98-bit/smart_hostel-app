@@ -33,7 +33,7 @@ export default function Card({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#fff",
+    backgroundColor: "#f5f3f3ff",
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
@@ -47,11 +47,11 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 4,
-    color: "#333",
+    color: "#2c2c2cff",
   },
   subtitle: {
     fontSize: 14,
-    color: "#666",
+    color: "#2e2c2cff",
     marginBottom: 8,
   },
   content: {
