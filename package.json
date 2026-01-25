@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "expo": "^54.0.31",
     "papaparse": "^5.5.3"
   },
   "devDependencies": {

@@ -1,23 +1,21 @@
 import express from "express";
 import cors from "cors";
 import routes from "./routes";
-import { errorHandler } from "./middlewares/error.middleware";
 
 const app = express();
 
-// Middlewares (ORDER MATTERS)
+/* 🔴 MUST BE FIRST */
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-// API Routes
+/* Routes */
 app.use("/api", routes);
 
-// 404 Handler
-app.use((req, res) => {
-  res.status(404).json({ message: "Route not found" });
+/* Debug middleware (TEMPORARY) */
+app.use((req, _res, next) => {
+  console.log("FINAL BODY:", req.body);
+  next();
 });
-
-// Error Handler (LAST)
-app.use(errorHandler);
 
 export default app;

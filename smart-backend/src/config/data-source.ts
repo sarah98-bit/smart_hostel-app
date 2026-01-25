@@ -1,7 +1,14 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { User } from "../entities/user.entity";
+import { Hostel } from "../modules/hostels/hostel.entity";
+import { Room } from "../modules/hostels/room.entity";
+import { Preference } from "../modules/preferences/preference.entity";
+import { Booking } from "../modules/bookings/booking.entity";
+import { Payment } from "../modules/payments/payment.entity";
+import dotenv from "dotenv";
 
+dotenv.config();  
 /**
  * Central TypeORM data source
  * Used across services via AppDataSource.getRepository()
@@ -25,9 +32,13 @@ export const AppDataSource = new DataSource({
 
   entities: [
     User,
-    // Add more entities here as you create them
+    Hostel,
+    Room,
+    Preference,
+    Booking,
+    Payment,
   ],
 
-  migrations: [],
+  migrations: ["src/migrations/*.ts"],
   subscribers: [],
 });

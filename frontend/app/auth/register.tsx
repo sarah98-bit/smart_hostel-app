@@ -25,16 +25,6 @@ const detectRoleFromEmail = (email: string): "student" | "admin" | "invalid" => 
     return "invalid";
   }
 };
-
-// Temporary mock register function (replace with backend API later)
-const mockRegister = async (username: string, email: string, password: string) => {
-  const role = detectRoleFromEmail(email);
-  if (role === "invalid") {
-    throw new Error("Invalid email domain. Use your school email.");
-  }
-  return { username, email, role };
-};
-
 export default function RegisterScreen() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -43,31 +33,60 @@ export default function RegisterScreen() {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-  const { setUser } = useAuth();
 
   const handleRegister = async () => {
     if (!username || !email || !password || !confirm) {
       Alert.alert("Error", "Please fill in all fields");
       return;
     }
+
     if (password !== confirm) {
       Alert.alert("Error", "Passwords do not match");
       return;
     }
 
-    setLoading(true);
-    try {
-      const userData = await mockRegister(username, email, password);
+    const role = detectRoleFromEmail(email);
 
-      setUser(userData);
+    if (role === "invalid") {
+      Alert.alert("❌ Registration Failed", "Please use a valid school email.");
+      return;
+    }
+
+    if (role === "admin") {
+      Alert.alert(
+        "❌ Registration Failed",
+        "Admin accounts cannot be created from the frontend."
+      );
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      // Send registration request to backend
+      const response = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          password,
+          role, // automatically "student"
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        throw new Error(data.message);
+      }
+
+      const userData = data.data;
+
+      // Save user to AsyncStorage
       await AsyncStorage.setItem("user", JSON.stringify(userData));
 
       Alert.alert("✅ Account Created", `Welcome ${userData.role}`);
-      if (userData.role === "admin") {
-        router.replace("/admin/dashboard");
-      } else {
-        router.replace("/student/dashboard");
-      }
+      router.replace("/student/dashboard");
     } catch (err: any) {
       Alert.alert("❌ Registration Failed", err.message || "Please try again");
     } finally {
@@ -146,7 +165,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(245, 192, 192, 0.4)",
+    backgroundColor: "rgba(0, 0, 0, 0)",
   },
   content: {
     padding: 20,
@@ -154,7 +173,7 @@ const styles = StyleSheet.create({
   },
   linkSecondary: {
     textAlign: "center",
-    color: "#fff",
+    color: "#000308",
     marginTop: 15,
   },
 });

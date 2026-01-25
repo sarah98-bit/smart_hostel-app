@@ -1,33 +1,46 @@
 import bcrypt from "bcryptjs";
-import * as jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import { AppDataSource } from "../../config/data-source";
 import { User } from "../../entities/user.entity";
-import { RegisterDTO, LoginDTO } from "./auth.dto";
 
-const userRepository = AppDataSource.getRepository(User);
+// ✅ Define allowed roles based on your PostgreSQL enum
+const ALLOWED_ROLES = ["admin", "student"] as const;
+type Role = typeof ALLOWED_ROLES[number];
 
 export class AuthService {
-  static async register(data: RegisterDTO) {
-    const { email, password } = data;
+  // ✅ Register a new user
+  static async register(body: { email: string; password: string; role: string }) {
+    const { email, password, role } = body;
 
-    const existingUser = await userRepository.findOne({
-      where: { email },
-    });
-
-    if (existingUser) {
-      throw new Error("Email already registered");
+    if (!email || !password || !role) {
+      throw new Error("Email, password, and role are required");
     }
 
+    // ✅ Validate role automatically
+    if (!ALLOWED_ROLES.includes(role as Role)) {
+      throw new Error(`Invalid role. Allowed roles: ${ALLOWED_ROLES.join(", ")}`);
+    }
+
+    const userRepo = AppDataSource.getRepository(User);
+
+    // Check if user already exists
+    const existing = await userRepo.findOne({ where: { email } });
+    if (existing) {
+      throw new Error("User already exists");
+    }
+
+    // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = userRepository.create({
+    const user = userRepo.create({
       email,
       password: hashedPassword,
-      role: "STUDENT",
+      role: role.toUpperCase() as "STUDENT" | "ADMIN",
     });
 
-    await userRepository.save(user);
+    await userRepo.save(user);
 
+    // Return user info (without password)
     return {
       id: user.id,
       email: user.email,
@@ -35,33 +48,27 @@ export class AuthService {
     };
   }
 
-  static async login(data: LoginDTO) {
+  // ✅ Login user
+  static async login(data: { email: string; password: string }) {
+    if (!data) throw new Error("Request body is missing");
+
     const { email, password } = data;
+    if (!email || !password) throw new Error("Email and password are required");
 
-    const user = await userRepository.findOne({
-      where: { email },
-    });
+    const userRepo = AppDataSource.getRepository(User);
+    const user = await userRepo.findOne({ where: { email } });
 
-    if (!user) {
-      throw new Error("Invalid email or password");
-    }
+    if (!user) throw new Error("Invalid credentials");
 
-    const isValid = await bcrypt.compare(password, user.password);
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) throw new Error("Invalid credentials");
 
-    if (!isValid) {
-      throw new Error("Invalid email or password");
-    }
-
-    const expiresIn = process.env.JWT_EXPIRES_IN ?? "1h";
-
-    const secret = process.env.JWT_SECRET as jwt.Secret | undefined;
-    if (!secret) {
-      throw new Error("JWT_SECRET not set in environment");
-    }
-
-    const signOptions: jwt.SignOptions = { expiresIn: expiresIn as unknown as any };
-
-    const token = jwt.sign({ id: user.id, role: user.role }, secret, signOptions);
+    // Sign JWT
+    const token = jwt.sign(
+      { id: user.id, role: user.role },
+      process.env.JWT_SECRET!,
+      { expiresIn: "7d" }
+    );
 
     return {
       token,

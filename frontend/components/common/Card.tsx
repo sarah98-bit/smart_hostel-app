@@ -33,10 +33,10 @@ export default function Card({
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#f5f3f3ff",
+    backgroundColor: "rgb(236, 201, 201)",
     borderRadius: 12,
     padding: 16,
-    marginBottom: 16,
+    marginBottom: 12,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,

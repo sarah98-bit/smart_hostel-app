@@ -1,28 +1,55 @@
-import axios from 'axios';
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
+import Constants from "expo-constants";
 
-// 🔐 Change this URL to match your backend
-export const API_BASE_URL = 'http://localhost:5000/api';
+const API_URL = Constants.expoConfig?.extra?.API_URL;
+
+if (!API_URL) {
+  throw new Error("API_URL is not defined");
+}
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: API_URL,
+  timeout: 10000,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
 });
 
-// 🧑 Login user
-export const loginUser = (data: { email: string; password: string }) => {
-  return api.post('/auth/login', data);
-};
+// ✅ FIXED interceptor
+api.interceptors.request.use(
+  (async (config: any) => {
+    const token = await AsyncStorage.getItem("token");
 
-// 🆕 Register user
-export const registerUser = (data: { username: string; email: string; password: string; role: string }) => {
-  return api.post('/auth/register', data);
-};
+    if (token && config.headers) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
 
-// 🔁 Forgot password
-export const forgotPassword = (data: { email: string }) => {
-  return api.post('/auth/forgot-password', data);
-};
+    return config;
+  }) as any,
+  (error: any) => Promise.reject(error)
+);
+
+// Response interceptor
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (!error.response) {
+      throw new Error("Network error. Check your connection.");
+    }
+
+    if (error.response.status === 401) {
+      await AsyncStorage.multiRemove(["token", "user"]);
+      router.replace("/auth/login");
+    }
+
+    throw new Error(
+      error.response.data?.message || "Something went wrong"
+    );
+  }
+);
+
+console.log("API URL:", API_URL);
 
 export default api;

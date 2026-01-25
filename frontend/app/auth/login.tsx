@@ -8,46 +8,28 @@ import {
   ScrollView,
   ImageBackground,
 } from "react-native";
-import Input from "../../components/common/Input";
-import Button from "../../components/common/Button";
-import AuthHeader from "../../components/auth/AuthHeader";
 import { useRouter } from "expo-router";
+import Input from "@/components/common/Input";
+import Button from "@/components/common/Button";
+import AuthHeader from "@/components/auth/AuthHeader";
+import { login } from "@/services/auth.service";
+import { useAuthContext } from "@/context/AuthContext";
 
-// Helper to check if input is email
-const isEmail = (text: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
+// Helpers (KEEP)
+const isEmail = (text: string) =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
 
-// Helper to validate only DKUT emails
 const isValidSchoolEmail = (email: string) =>
-  email.endsWith("@students.dkut.ac.ke") || email.endsWith("@dkut.ac.ke");
-
-// Temporary mock login (until backend is ready)
-const mockLogin = async (identifier: string, password: string) => {
-  const isUserEmail = isEmail(identifier);
-
-  if (isUserEmail && !isValidSchoolEmail(identifier)) {
-    throw new Error("Please use a valid DKUT email address");
-  }
-
-  if (password.length < 6) {
-    throw new Error("Password must be at least 6 characters");
-  }
-
-  await new Promise((resolve) => setTimeout(resolve, 800));
-
-  // Determine role
-  let role = "student";
-  if (isUserEmail && identifier.endsWith("@dkut.ac.ke")) {
-    role = "admin";
-  }
-
-  return { identifier, role };
-};
+  email.endsWith("@students.dkut.ac.ke") ||
+  email.endsWith("@dkut.ac.ke");
 
 export default function LoginScreen() {
+  const router = useRouter();
+  const { loginUser } = useAuthContext();
+
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   const handleLogin = async () => {
     if (!identifier || !password) {
@@ -55,15 +37,23 @@ export default function LoginScreen() {
       return;
     }
 
+    // Optional DKUT email validation
+    if (isEmail(identifier) && !isValidSchoolEmail(identifier)) {
+      Alert.alert("Invalid Email", "Please use a valid DKUT email address");
+      return;
+    }
+
     setLoading(true);
 
     try {
-      const user = await mockLogin(identifier, password);
+      // 🔐 REAL BACKEND LOGIN
+      const user = await login(identifier, password);
 
-      Alert.alert("Login Successful", `Welcome ${user.role}!`);
+      // 🔑 CRITICAL: update global auth state
+      loginUser(user);
 
-      
-      if (user.role === "admin") {
+      // Role-based redirect
+      if (user.role === "ADMIN") {
         router.replace("/admin/dashboard");
       } else {
         router.replace("/student/dashboard");
@@ -116,7 +106,9 @@ export default function LoginScreen() {
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => router.push("/auth/register")}>
-            <Text style={styles.linkSecondary}>Don't have an account? Register</Text>
+            <Text style={styles.linkSecondary}>
+              Don't have an account? Register
+            </Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -139,7 +131,7 @@ const styles = StyleSheet.create({
   },
   linkSecondary: {
     textAlign: "center",
-    color: "#fff",
+    color: "hsl(0, 26%, 96%)",
     marginTop: 5,
   },
 });

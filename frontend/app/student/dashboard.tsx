@@ -21,7 +21,6 @@ export default function StudentDashboard() {
 
       {/* Cards */}
       <View style={styles.cardContainer}>
-      
         <Card
           title="🏠 Browse Hostels"
           subtitle="View available hostels and book your room."
@@ -39,10 +38,25 @@ export default function StudentDashboard() {
           subtitle="See rooms recommended for you."
           onPress={() => router.push("/student/recommendations")}
         />
+
         <Card
-        title="🧑🏼 Profile"
-        subtitle="View profile."
-        onPress={() => router.push("/student/profile")}
+          title="🧑🏼 Profile"
+          subtitle="View profile."
+          onPress={() => router.push("/student/profile")}
+        />
+
+        {/* New Booking Card */}
+        <Card
+          title="📖 Book Room"
+          subtitle="Reserve your preferred room now."
+          onPress={() => router.push("/student/booking")}
+        />
+
+        {/* New Payment Card */}
+        <Card
+          title="💳 Make Payment"
+          subtitle="Pay for your room securely."
+          onPress={() => router.push("/student/payment")}
         />
       </View>
     </ScrollView>
