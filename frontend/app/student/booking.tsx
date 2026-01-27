@@ -6,6 +6,7 @@ import {
   Alert,
   ActivityIndicator,
   ScrollView,
+  ImageBackground,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import Card from "@/components/common/Card";
@@ -17,68 +18,86 @@ export default function BookingScreen() {
   const hostelName = typeof name === "string" ? name : name?.[0];
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-const handleBooking = async () => {
-  if (!hostelId) {
-    Alert.alert("Error", "Hostel ID missing. Please try again.");
-    return;
-  }
 
-  setLoading(true);
-  try {
-    const booking = await createBooking(hostelId as string);
+  const handleBooking = async () => {
+    if (!hostelId) {
+      Alert.alert("Error", "Hostel ID missing. Please try again.");
+      return;
+    }
 
-    router.push({
-      pathname: "/student/payment",
-      params: {
-        bookingId: booking.id,          
-        price: booking.price.toString(),
-        hostelName: booking.hostel.name,
-      },
-    });
-  } catch (e: any) {
-    Alert.alert("Booking failed", e.message);
-  } finally {
-    setLoading(false);
-  }
-};
+    setLoading(true);
+    try {
+      const booking = await createBooking(hostelId as string);
 
+      router.push({
+        pathname: "/student/payment",
+        params: {
+          bookingId: booking.id,
+          price: booking.price.toString(),
+          hostelName: booking.hostel.name,
+        },
+      });
+    } catch (e: any) {
+      Alert.alert("Booking failed", e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Text style={styles.title}>Confirm Booking</Text>
+    <ImageBackground
+      source={require("../../assets/images/dashboard-bg.jpeg")}
+      style={styles.background}
+      resizeMode="cover"
+    >
+      <View style={styles.overlay} />
 
-      <Card
-        title={hostelName}
-        subtitle={`Monthly Rent: KES ${typeof price === "string" ? price : price?.[0]}`}
-      />
+      <ScrollView contentContainerStyle={styles.container}>
+        <Text style={styles.title}>Confirm Booking</Text>
 
-      <View style={styles.infoBox}>
-        <Text style={styles.infoText}>
-          This action will reserve the room temporarily until payment is
-          completed.
-        </Text>
-      </View>
+        <Card
+          title={hostelName}
+          subtitle={`Monthly Rent: KES ${
+            typeof price === "string" ? price : price?.[0]
+          }`}
+        />
 
-      {loading ? (
-        <ActivityIndicator size="large" />
-      ) : (
-        <Button title="Reserve Room" onPress={handleBooking} />
-      )}
-    </ScrollView>
+        <View style={styles.infoBox}>
+          <Text style={styles.infoText}>
+            This action will reserve the room temporarily until payment is
+            completed.
+          </Text>
+        </View>
+
+        {loading ? (
+          <ActivityIndicator size="large" color="#fff" />
+        ) : (
+          <Button title="Reserve Room" onPress={handleBooking} />
+        )}
+      </ScrollView>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
+  background: {
+    flex: 1,
+    width: "100%",
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.4)",
+  },
   container: {
     flexGrow: 1,
-    backgroundColor: "#f7f8fa",
     padding: 20,
+    position: "relative",
   },
   title: {
     fontSize: 22,
     fontWeight: "700",
     marginBottom: 20,
-    color: "#222",
+    color: "#fff",
   },
   infoBox: {
     backgroundColor: "#fff",

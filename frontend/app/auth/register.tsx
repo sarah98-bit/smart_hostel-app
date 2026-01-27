@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0, 0, 0, 0)",
+    backgroundColor: "rgba(7, 14, 19, 0.53)",
   },
   content: {
     padding: 20,
@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
   },
   linkSecondary: {
     textAlign: "center",
-    color: "#000308",
+    color: "#65cdec",
     marginTop: 15,
   },
 });

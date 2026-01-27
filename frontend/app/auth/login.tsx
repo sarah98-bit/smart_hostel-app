@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   background: { flex: 1, justifyContent: "center" },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.25)",
+    backgroundColor: "rgba(0, 0, 0, 0.45)",
   },
   content: { padding: 20, justifyContent: "center" },
   link: {
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
   linkSecondary: {
     textAlign: "center",
-    color: "hsl(0, 26%, 96%)",
+    color: "hsl(0, 24%, 96%)",
     marginTop: 5,
   },
 });

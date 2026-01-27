@@ -17,17 +17,15 @@ const api = axios.create({
   },
 });
 
-// ✅ FIXED interceptor
+// Request interceptor
 api.interceptors.request.use(
-  (async (config: any) => {
+  async (config: any) => {
     const token = await AsyncStorage.getItem("token");
-
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-
     return config;
-  }) as any,
+  },
   (error: any) => Promise.reject(error)
 );
 
@@ -36,17 +34,18 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (!error.response) {
-      throw new Error("Network error. Check your connection.");
+      // Network or server not reachable
+      return Promise.reject(new Error("Network error. Check your connection."));
     }
 
+    // 401: Unauthorized
     if (error.response.status === 401) {
       await AsyncStorage.multiRemove(["token", "user"]);
       router.replace("/auth/login");
     }
 
-    throw new Error(
-      error.response.data?.message || "Something went wrong"
-    );
+    // Forward backend error to frontend instead of generic message
+    return Promise.reject(error.response.data || error.message || "Something went wrong");
   }
 );
 

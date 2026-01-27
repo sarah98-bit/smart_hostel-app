@@ -6,12 +6,13 @@ import {
   Alert,
   ActivityIndicator,
   ScrollView,
+  TextInput,
   TouchableOpacity,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import Card from "@/components/common/Card";
 import Button from "@/components/common/Button";
-import { makePayment } from "@/services/payment.service";
+import { makePayment, PaymentResponse } from "@/services/payment.service";
 
 export default function PaymentScreen() {
   const router = useRouter();
@@ -19,27 +20,44 @@ export default function PaymentScreen() {
 
   const bookingId = params.bookingId as string;
   const hostelName = params.hostelName as string;
-  const price = params.price as string;
+  const price = Number(params.price);
 
+  const [phone, setPhone] = useState(""); // User's M-Pesa phone number
   const [loading, setLoading] = useState(false);
 
   const handlePayment = async () => {
-    setLoading(true);
-    try {
-      await makePayment(bookingId, Number(price));
+    if (!phone) {
+      Alert.alert("Phone Number Required", "Please enter your M-Pesa phone number.");
+      return;
+    }
 
-      Alert.alert(
-        "Payment Successful",
-        "Your room has been booked successfully.",
-        [
-          {
-            text: "OK",
-            onPress: () => router.replace("/student/dashboard"),
-          },
-        ]
-      );
+    setLoading(true);
+
+    try {
+      const payment: PaymentResponse = await makePayment(bookingId, phone, price);
+
+      // If backend says success, show alert
+      if (payment.success) {
+        Alert.alert(
+          "Payment Initiated",
+          "You will receive an M-Pesa prompt on your phone. Complete the payment to confirm your booking.",
+          [
+            {
+              text: "OK",
+              onPress: () => router.replace("/student/dashboard"),
+            },
+          ]
+        );
+        console.log("STK Push CheckoutRequestID:", payment.checkoutRequestId);
+      } else {
+        Alert.alert("Payment Failed", payment.message || "Payment could not be processed");
+      }
     } catch (error: any) {
-      Alert.alert("Payment Failed", error.message || "Payment could not be processed");
+      console.error("Payment Error:", error);
+      Alert.alert(
+        "Payment Error",
+        error.message || "Something went wrong while processing your payment."
+      );
     } finally {
       setLoading(false);
     }
@@ -49,21 +67,26 @@ export default function PaymentScreen() {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Confirm Payment</Text>
 
-      <Card
-        title={hostelName}
-        subtitle={`Amount: KES ${price}`}
-      />
+      <Card title={hostelName} subtitle={`Amount: KES ${price}`} />
 
       <View style={styles.paymentBox}>
         <Text style={styles.label}>Payment Method</Text>
-        <Text style={styles.method}>M-Pesa (Simulated)</Text>
+        <Text style={styles.method}>M-Pesa (STK Push)</Text>
         <Text style={styles.note}>
-          This is a mock payment. No real transaction is performed.
+          You will receive a prompt on your phone to authorize the payment.
         </Text>
       </View>
 
+      <TextInput
+        style={styles.input}
+        placeholder="Enter M-Pesa Phone Number"
+        keyboardType="phone-pad"
+        value={phone}
+        onChangeText={setPhone}
+      />
+
       {loading ? (
-        <ActivityIndicator size="large" />
+        <ActivityIndicator size="large" color="#007AFF" />
       ) : (
         <Button title="Pay Now" onPress={handlePayment} />
       )}
@@ -107,6 +130,15 @@ const styles = StyleSheet.create({
   note: {
     fontSize: 13,
     color: "#999",
+  },
+  input: {
+    backgroundColor: "#fff",
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 20,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: "#ccc",
   },
   cancel: {
     textAlign: "center",

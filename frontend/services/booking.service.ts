@@ -2,8 +2,9 @@ import api from "./api";
 import { ApiResponse } from "./types";
 
 export interface Booking {
+    [x: string]: any;
     id: string | number | (string | number)[] | null | undefined;
-    hostel: any;
+    hostelId: string;
     roomId: string;
     hostelName: string;
     price: number;

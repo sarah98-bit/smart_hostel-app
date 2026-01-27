@@ -22,12 +22,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     fontWeight: "700",
-    color: "#333",
+    color: "#0f0f0f",
     textAlign: "center",
   },
   subtitle: {
     fontSize: 16,
-    color: "#777",
+    color: "#72eaff",
     textAlign: "center",
     marginTop: 5,
   },
