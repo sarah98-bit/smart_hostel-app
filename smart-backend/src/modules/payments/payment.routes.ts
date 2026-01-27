@@ -1,15 +1,11 @@
-import { RequestHandler, Router } from "express";
-import { PaymentController } from "./payment.controller";
-import { authMiddleware } from "../../middlewares/auth.middleware";
-import { roleMiddleware } from "../../middlewares/role.middleware";
+import express from "express";
+import { initiatePayment } from "./payment.controller";
+import { mpesaCallback } from "./callback.controller";
 
-const router = Router();
+const router = express.Router();
 
-router.post(
-  "/",
-  authMiddleware as RequestHandler,
-  roleMiddleware(["STUDENT"]) as RequestHandler,
-  PaymentController.pay as RequestHandler
-);
+router.post("/payments/initiate", initiatePayment);
+router.post("/stk-push", initiatePayment);
+router.post("/payments/callback", mpesaCallback);
 
 export default router;

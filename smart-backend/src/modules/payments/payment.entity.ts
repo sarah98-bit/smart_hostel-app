@@ -1,8 +1,8 @@
 import {
   Entity,
   PrimaryGeneratedColumn,
-  ManyToOne,
   Column,
+  ManyToOne,
   CreateDateColumn,
 } from "typeorm";
 import { Booking } from "../bookings/booking.entity";
@@ -12,15 +12,29 @@ export class Payment {
   @PrimaryGeneratedColumn("uuid")
   id!: string;
 
-  @ManyToOne(() => Booking)
+  @ManyToOne(() => Booking, (booking) => booking.payments)
   booking!: Booking;
+
+  @Column({ nullable: true })
+  checkoutRequestId!: string;
+
+  @Column({ nullable: true })
+  phone!: string;
 
   @Column("int")
   amount!: number;
 
-  @Column({ default: "MPESA" })
-  method!: string;
+  @Column({
+    type: "enum",
+    enum: ["PENDING", "SUCCESS", "FAILED"],
+    default: "PENDING",
+  })
+  status!: "PENDING" | "SUCCESS" | "FAILED";
+
+  @Column({ nullable: true })
+  mpesaReceiptNumber?: string;
 
   @CreateDateColumn()
-  paidAt!: Date;
+  createdAt!: Date;
+  receiptNumber: any;
 }

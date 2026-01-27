@@ -9,7 +9,7 @@ router.post(
   "/",
   authMiddleware as RequestHandler,
   roleMiddleware(["STUDENT"]) as RequestHandler,
-  BookingController.create
+BookingController.createBooking as unknown as RequestHandler
 );
 
 export default router;
