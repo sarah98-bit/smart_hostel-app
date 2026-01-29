@@ -7,7 +7,6 @@ export default {
     version: "1.0.0",
      android: {
       package: "com.thuo.smarthostel",
-      versionCode: 1
     },
     ios: {
       bundleIdentifier: "com.thuo.smarthostel"
