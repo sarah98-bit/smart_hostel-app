@@ -13,7 +13,11 @@ export default {
       bundleIdentifier: "com.thuo.smarthostel"
     },
     extra: {
-      API_URL: process.env.API_URL,
+  extra: {
+  API_URL:
+    process.env.API_URL_PROD ??
+    process.env.API_URL_DEV
+  },
       eas: {
         projectId: "1836db0e-5114-402f-a3d0-21fd8f945731"
       }

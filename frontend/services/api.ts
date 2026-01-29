@@ -8,6 +8,7 @@ const API_URL = Constants.expoConfig?.extra?.API_URL;
 if (!API_URL) {
   throw new Error("API_URL is not defined");
 }
+console.log(Constants.expoConfig?.extra?.API_URL);
 
 const api = axios.create({
   baseURL: API_URL,
