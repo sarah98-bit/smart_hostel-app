@@ -9,7 +9,7 @@ export default function StudentIndex() {
 
   useEffect(() => {
     if (!loading) {
-      if (!user || user.role !== "student") {
+      if (!user || user.role !== "STUDENT") {
         Alert.alert("Access Denied", "You must be a student to access this page.");
         router.replace("/auth/login");
       } else {

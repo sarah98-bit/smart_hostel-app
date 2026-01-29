@@ -8,12 +8,34 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import { useRouter } from "expo-router";
-import Input from "@/components/common/Input";
 import Button from "@/components/common/Button";
 import { getRecommendations } from "@/services/recommendation.service";
 
 const FACILITIES = ["WiFi", "Water", "Security", "Parking", "Laundry"];
+
+/* === Derived from Dataset === */
+const BUDGET_OPTIONS = [
+  { label: "Low (≤ 10,500 KES)", value: 10500 },
+  { label: "Mid (≤ 14,500 KES)", value: 14500 },
+  { label: "High (≤ 20,000 KES)", value: 20000 },
+];
+
+const DISTANCE_OPTIONS = [
+  { label: "≤ 1 km", value: 1 },
+  { label: "≤ 2 km", value: 2 },
+  { label: "≤ 3 km", value: 3 },
+  { label: "≤ 5 km", value: 5 },
+];
+
+const ROOM_TYPES = [
+  "Single",
+  "Double",
+  "Triple",
+  "Ensuite",
+  "Self-contained",
+];
 
 export default function PreferencesScreen() {
   const router = useRouter();
@@ -22,9 +44,6 @@ export default function PreferencesScreen() {
   const [maxDistance, setMaxDistance] = useState("");
   const [roomType, setRoomType] = useState("");
   const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
-  const [sleepTime, setSleepTime] = useState("");
-  const [studyHabit, setStudyHabit] = useState("");
-  const [visitorTolerance, setVisitorTolerance] = useState("");
   const [loading, setLoading] = useState(false);
 
   const toggleFacility = (facility: string) => {
@@ -48,17 +67,17 @@ export default function PreferencesScreen() {
         maxDistance: Number(maxDistance),
         roomType,
         facilities: selectedFacilities,
-        sleepTime,
-        studyHabit,
-        visitorTolerance,
       };
 
-      const results = await getRecommendations(preferences, {
-        maxPrice: 0,
-        maxDistance: 0,
-        roomType: "",
-        facilities: []
-      });
+      const results = await getRecommendations(
+        preferences,
+        {
+          maxPrice: Number(maxPrice),
+          maxDistance: Number(maxDistance),
+          roomType,
+          facilities: selectedFacilities,
+        }
+      );
 
       router.push({
         pathname: "/student/recommendations",
@@ -75,45 +94,72 @@ export default function PreferencesScreen() {
 
   return (
     <ImageBackground
-      source={require("../../assets/images/dashboard-bg.jpeg")} // JPEG background
+      source={require("../../assets/images/dashboard-bg.jpeg")}
       style={styles.background}
       resizeMode="cover"
     >
-      {/* Overlay */}
       <View style={styles.overlay} />
 
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>Hostel Preferences</Text>
 
+        {/* === Budget Dropdown === */}
         <View style={styles.section}>
-          <Text style={styles.label}>Maximum Budget (KES)</Text>
-          <Input
-            placeholder="e.g. 8000"
-            keyboardType="numeric"
-            value={maxPrice}
-            onChangeText={setMaxPrice}
-          />
+          <Text style={styles.label}>Maximum Budget</Text>
+          <View style={styles.pickerWrapper}>
+            <Picker
+              selectedValue={maxPrice}
+              onValueChange={(value) => setMaxPrice(String(value))}
+            >
+              <Picker.Item label="Select budget" value="" />
+              {BUDGET_OPTIONS.map((item) => (
+                <Picker.Item
+                  key={item.value}
+                  label={item.label}
+                  value={item.value}
+                />
+              ))}
+            </Picker>
+          </View>
         </View>
 
+        {/* === Distance Dropdown === */}
         <View style={styles.section}>
-          <Text style={styles.label}>Maximum Distance (KM)</Text>
-          <Input
-            placeholder="e.g. 2"
-            keyboardType="numeric"
-            value={maxDistance}
-            onChangeText={setMaxDistance}
-          />
+          <Text style={styles.label}>Maximum Distance</Text>
+          <View style={styles.pickerWrapper}>
+            <Picker
+              selectedValue={maxDistance}
+              onValueChange={(value) => setMaxDistance(String(value))}
+            >
+              <Picker.Item label="Select distance" value="" />
+              {DISTANCE_OPTIONS.map((item) => (
+                <Picker.Item
+                  key={item.value}
+                  label={item.label}
+                  value={item.value}
+                />
+              ))}
+            </Picker>
+          </View>
         </View>
 
+        {/* === Room Type Dropdown === */}
         <View style={styles.section}>
           <Text style={styles.label}>Preferred Room Type</Text>
-          <Input
-            placeholder="Single / Double / Bedsitter"
-            value={roomType}
-            onChangeText={setRoomType}
-          />
+          <View style={styles.pickerWrapper}>
+            <Picker
+              selectedValue={roomType}
+              onValueChange={(value) => setRoomType(value)}
+            >
+              <Picker.Item label="Select room type" value="" />
+              {ROOM_TYPES.map((type) => (
+                <Picker.Item key={type} label={type} value={type} />
+              ))}
+            </Picker>
+          </View>
         </View>
 
+        {/* === Facilities === */}
         <View style={styles.section}>
           <Text style={styles.label}>Facilities</Text>
           <View style={styles.facilityContainer}>
@@ -160,18 +206,18 @@ const styles = StyleSheet.create({
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.4)", // semi-transparent dark overlay
+    backgroundColor: "rgba(0,0,0,0.4)",
   },
   container: {
     flexGrow: 1,
     padding: 20,
-    position: "relative", // ensures content is above overlay
+    zIndex: 1,
   },
   title: {
     fontSize: 22,
     fontWeight: "700",
     marginBottom: 20,
-    color: "#dfa4a4f3", // change text to white for readability
+    color: "#dfa4a4f3",
   },
   section: {
     backgroundColor: "#e2d391d3",
@@ -185,6 +231,13 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 8,
     color: "#555",
+  },
+  pickerWrapper: {
+    borderWidth: 1,
+    borderColor: "#0c161dde",
+    borderRadius: 10,
+    overflow: "hidden",
+    backgroundColor: "#fff",
   },
   facilityContainer: {
     flexDirection: "row",

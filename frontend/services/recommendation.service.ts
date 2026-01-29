@@ -1,5 +1,4 @@
 import api from "./api";
-import { PreferencesPayload } from "./preference.service";
 
 export interface RecommendationRequest {
   maxPrice: number;
@@ -20,7 +19,7 @@ export interface HostelRecommendation {
 }
 
 export const getRecommendations = async (
-preferences: PreferencesPayload, data: RecommendationRequest): Promise<HostelRecommendation[]> => {
+data: RecommendationRequest, p0: { maxPrice: number; maxDistance: number; roomType: string; facilities: string[]; }): Promise<HostelRecommendation[]> => {
   const res = await api.post("/recommendations", data);
   return res.data.data;
 };

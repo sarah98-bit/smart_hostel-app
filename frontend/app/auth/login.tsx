@@ -15,13 +15,10 @@ import AuthHeader from "@/components/auth/AuthHeader";
 import { login } from "@/services/auth.service";
 import { useAuthContext } from "@/context/AuthContext";
 
-// Helpers (KEEP)
-const isEmail = (text: string) =>
-  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
-
+// Helpers
+const isEmail = (text: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text);
 const isValidSchoolEmail = (email: string) =>
-  email.endsWith("@students.dkut.ac.ke") ||
-  email.endsWith("@dkut.ac.ke");
+  email.endsWith("@students.dkut.ac.ke") || email.endsWith("@dkut.ac.ke");
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -37,7 +34,6 @@ export default function LoginScreen() {
       return;
     }
 
-    // Optional DKUT email validation
     if (isEmail(identifier) && !isValidSchoolEmail(identifier)) {
       Alert.alert("Invalid Email", "Please use a valid DKUT email address");
       return;
@@ -46,11 +42,11 @@ export default function LoginScreen() {
     setLoading(true);
 
     try {
-      // 🔐 REAL BACKEND LOGIN
+      // Call backend login
       const user = await login(identifier, password);
 
-      // 🔑 CRITICAL: update global auth state
-      loginUser(user);
+      // Update global auth state
+      await loginUser(user);
 
       // Role-based redirect
       if (user.role === "ADMIN") {
@@ -59,7 +55,7 @@ export default function LoginScreen() {
         router.replace("/student/dashboard");
       }
     } catch (err: any) {
-      Alert.alert("Login Failed", err.message || "Invalid credentials");
+      Alert.alert("Login Failed", err?.message || "Invalid credentials");
     } finally {
       setLoading(false);
     }
@@ -101,7 +97,9 @@ export default function LoginScreen() {
             onPress={handleLogin}
           />
 
-          <TouchableOpacity onPress={() => router.push("/auth/forgot-password")}>
+          <TouchableOpacity
+            onPress={() => router.push("/auth/forgot-password")}
+          >
             <Text style={styles.link}>Forgot Password?</Text>
           </TouchableOpacity>
 

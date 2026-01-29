@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "Smart Hostel",
+    "slug": "smart-hostel",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/icon.png",
+    "userInterfaceStyle": "light",
+   
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.thuo.smarthostel"
+    },
+    "android": {
+      "package": "com.thuo.smarthostel",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./assets/images/favicon.png"
+    },
+    "scheme": "smart_hostel",
+    "extra": {
+      "API_URL": "http://192.168.100.15:5000/api" 
+    }
+  }
+}

@@ -4,41 +4,72 @@ import { User } from "@/services/types";
 
 interface AuthContextType {
   user: User | null;
-  loginUser: (user: User) => void;
-  logoutUser: () => void;
+  loginUser: (user: User) => Promise<void>;
+  logoutUser: () => Promise<void>;
   loading: boolean;
+  isAuthenticated: boolean;
 }
 
-const AuthContext = createContext<AuthContextType>({} as AuthContextType);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
+  // ✅ Derived auth state
+  const isAuthenticated = !!user;
+
+  // Load user from AsyncStorage on mount
   useEffect(() => {
     const init = async () => {
-      const stored = await AsyncStorage.getItem("user");
-      if (stored) setUser(JSON.parse(stored));
-      setLoading(false);
+      try {
+        const stored = await AsyncStorage.getItem("user");
+        if (stored) setUser(JSON.parse(stored));
+      } catch (error) {
+        console.error("Failed to load user from storage:", error);
+      } finally {
+        setLoading(false);
+      }
     };
     init();
   }, []);
 
-  const loginUser = async (user: User) => {
-    await AsyncStorage.setItem("user", JSON.stringify(user));
-    setUser(user); // 🔑 THIS triggers rerender
+  // Save user on login
+  const loginUser = async (userData: User) => {
+    try {
+      await AsyncStorage.setItem("user", JSON.stringify(userData));
+      setUser(userData);
+    } catch (error) {
+      console.error("Failed to save user:", error);
+      throw error;
+    }
   };
 
+  // Clear storage on logout
   const logoutUser = async () => {
-    await AsyncStorage.multiRemove(["user", "token"]);
-    setUser(null);
+    try {
+      await AsyncStorage.multiRemove(["user", "token"]);
+      setUser(null);
+    } catch (error) {
+      console.error("Failed to logout:", error);
+      throw error;
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ user, loginUser, logoutUser, loading }}>
+    <AuthContext.Provider
+      value={{ user, loginUser, logoutUser, loading, isAuthenticated }}
+    >
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuthContext = () => useContext(AuthContext);
+// Hook for consuming the auth context
+export const useAuthContext = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuthContext must be used within an AuthProvider");
+  }
+  return context;
+};

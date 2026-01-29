@@ -18,17 +18,18 @@ export default function IndexScreen() {
 
       <TouchableOpacity
         style={[styles.button, styles.loginButton]}
-        onPress={() => router.push("./auth/login")}
+        onPress={() => router.replace("/auth/login")}
       >
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
 
       <TouchableOpacity
         style={[styles.button, styles.registerButton]}
-        onPress={() => router.push("./auth/register")}
+        onPress={() => router.replace("/auth/register")}
       >
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
+
     </View>
   );
 }

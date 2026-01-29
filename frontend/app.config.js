@@ -5,24 +5,24 @@ export default {
     name: "Smart Hostel",
     slug: "smart-hostel",
     version: "1.0.0",
-     android: {
+    android: {
       package: "com.thuo.smarthostel",
     },
     ios: {
       bundleIdentifier: "com.thuo.smarthostel"
     },
+    scheme: "smart_hostel",
     extra: {
-  extra: {
-  API_URL:
-    process.env.API_URL_PROD ??
-    process.env.API_URL_DEV
-  },
+      extra: {
+       API_URL: process.env.EXPO_PUBLIC_API_URL,
+      },
       eas: {
         projectId: "1836db0e-5114-402f-a3d0-21fd8f945731"
       }
     },
 
-     platforms: ["android", "ios", "web"]
+
+    platforms: ["android", "ios", "web"]
   },
-   
+
 };
