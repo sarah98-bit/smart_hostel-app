@@ -1,0 +1,49 @@
+hostel_id,name,city,university,distance_km,price_kes_per_month,price_band,gender_allowed,facilities,room_types,rating,review_count,availability,landlord_phone,created_date
+DKUT_001,Sunrise Hostel,Nyeri,Dedan Kimathi University of Technology,0.7,16500,high,Mixed,Balcony;Study Room;CCTV;Kitchen;Furnished;WiFi,Ensuite;Double;Single,4.4,61,True,0790739067,2025-09-19
+DKUT_002,La Duvet Hostels Ltd,Nyeri,Dedan Kimathi University of Technology,4.0,11500,mid,Mixed,Solar Backup;Laundry;Furnished;Water Supply;Parking;WiFi;Study Room;24/7 Security,Triple,3.7,54,False,0718862632,2025-09-19
+DKUT_003,Mimshack Students Residence,Nyeri,Dedan Kimathi University of Technology,3.4,19000,high,Female Only,Solar Backup;Water Supply;24/7 Security;Hot Water;CCTV;WiFi;Kitchen,Ensuite,4.8,11,True,0724693216,2025-09-19
+DKUT_004,Kens Hostel,Nyeri,Dedan Kimathi University of Technology,3.3,16000,high,Male Only,24/7 Security;Solar Backup;WiFi;Laundry,Ensuite,2.9,27,True,0704835981,2025-09-19
+DKUT_005,Arch Bishop Kirima Hostels,Nyeri,Dedan Kimathi University of Technology,1.9,12500,mid,Mixed,Hot Water;Study Room;Kitchen;Solar Backup,Single;Double,4.5,44,True,0700088875/0721611281,2025-09-19
+DKUT_006,Tamaal Hostel,Nyeri,Dedan Kimathi University of Technology,0.7,7500,low,Mixed,24/7 Security;Study Room;Balcony;Kitchen;Parking;Hot Water,Self-contained,4.5,96,True,0726176330,2025-09-19
+DKUT_007,M&M,Nyeri,Dedan Kimathi University of Technology,3.6,10500,low,Female Only,WiFi;Balcony;24/7 Security;CCTV,Self-contained;Triple;Double,4.3,52,True,0722356852,2025-09-19
+DKUT_008,Mt. Kenya Hostel,Nyeri,Dedan Kimathi University of Technology,2.4,17000,high,Male Only,Furnished;Study Room;Hot Water;24/7 Security;WiFi;Laundry;CCTV;Parking,Single;Triple;Double,3.3,30,False,0726969255,2025-09-19
+DKUT_009,Lolan Scholars,Nyeri,Dedan Kimathi University of Technology,2.7,9500,low,Mixed,Water Supply;Hot Water;Furnished;Solar Backup;Laundry;WiFi;CCTV;Study Room,Ensuite,4.3,11,True,0711905530,2025-09-19
+DKUT_010,Mumford Hostel,Nyeri,Dedan Kimathi University of Technology,4.7,17500,high,Mixed,Hot Water;Study Room;Laundry;Kitchen;Furnished;WiFi,Single,3.1,7,True,0726696180,2025-09-19
+DKUT_011,Muruguru Hostel,Nyeri,Dedan Kimathi University of Technology,1.5,15500,high,Mixed,Hot Water;Furnished;Parking;Kitchen,Double;Triple,3.5,25,True,0716329840,2025-09-19
+DKUT_012,Allexandria,Nyeri,Dedan Kimathi University of Technology,1.2,18000,high,Male Only,Study Room;Hot Water;CCTV;Furnished;Water Supply,Ensuite,3.8,99,True,0714447933,2025-09-19
+DKUT_013,Ngamia,Nyeri,Dedan Kimathi University of Technology,3.6,10500,low,Mixed,Solar Backup;Kitchen;Laundry;Hot Water;Balcony,Single,3.4,28,True,0721527355,2025-09-19
+DKUT_014,Samrice Hostel,Nyeri,Dedan Kimathi University of Technology,2.4,14000,mid,Male Only,Kitchen;Hot Water;Laundry;24/7 Security;Water Supply,Self-contained;Double;Single,3.9,55,False,0722645957,2025-09-19
+DKUT_015,Addison Hostel,Nyeri,Dedan Kimathi University of Technology,4.5,14500,mid,Female Only,WiFi;Study Room;Hot Water;Parking;Kitchen;Water Supply,Double;Self-contained;Triple,5.0,10,True,0713702292,2025-09-19
+DKUT_016,Imani Insuit,Nyeri,Dedan Kimathi University of Technology,1.6,19000,high,Male Only,Study Room;Water Supply;Balcony;Furnished,Single;Ensuite;Double,4.5,104,True,0708109936,2025-09-19
+DKUT_017,Peresi Hostel,Nyeri,Dedan Kimathi University of Technology,4.4,9500,low,Male Only,Hot Water;Solar Backup;CCTV;WiFi;Furnished;Kitchen,Double;Ensuite,4.1,116,True,0722630285,2025-09-19
+DKUT_018,Gracious Hostel,Nyeri,Dedan Kimathi University of Technology,1.8,10000,low,Female Only,Kitchen;Solar Backup;Furnished;WiFi;CCTV,Triple;Single,4.3,138,False,0702426598,2025-09-19
+DKUT_019,Kimathi Students Centre Hostels,Nyeri,Dedan Kimathi University of Technology,2.1,7500,low,Mixed,Kitchen;WiFi;Water Supply;Balcony;Solar Backup;Furnished;Hot Water;24/7 Security,Self-contained;Single,4.2,17,False,0722579514,2025-09-19
+DKUT_020,Landmark View,Nyeri,Dedan Kimathi University of Technology,3.9,16500,high,Female Only,Kitchen;Hot Water;Water Supply;CCTV;Furnished,Self-contained;Double;Triple,3.6,68,False,0728543703,2025-09-19
+DKUT_021,Elegant Hostel,Nyeri,Dedan Kimathi University of Technology,3.7,18000,high,Male Only,WiFi;CCTV;Kitchen;Parking;Furnished;Hot Water,Self-contained;Single;Double,4.6,74,True,0728543703,2025-09-19
+DKUT_022,Stoneville Hostel,Nyeri,Dedan Kimathi University of Technology,4.8,17500,high,Mixed,Hot Water;Furnished;CCTV;Parking,Double;Triple,3.0,70,True,0728543703,2025-09-19
+DKUT_023,Congo Blaza Ville,Nyeri,Dedan Kimathi University of Technology,2.4,16000,high,Male Only,24/7 Security;Hot Water;Water Supply;WiFi;Laundry;Solar Backup;Kitchen,Double;Ensuite;Self-contained,4.2,74,True,0725447741,2025-09-19
+DKUT_024,Angies Hostels,Nyeri,Dedan Kimathi University of Technology,3.5,7000,low,Male Only,Water Supply;Solar Backup;Kitchen;Study Room;Parking,Triple;Ensuite;Self-contained,4.7,113,True,0726451805,2025-09-19
+DKUT_025,Nyeri View Hostels,Nyeri,Dedan Kimathi University of Technology,2.1,12000,mid,Female Only,24/7 Security;Laundry;Hot Water;Furnished;Kitchen;Balcony,Double,4.9,41,False,0720075178,2025-09-19
+DKUT_026,Baba Ken,Nyeri,Dedan Kimathi University of Technology,5.0,17000,high,Male Only,24/7 Security;Solar Backup;Balcony;Parking;Hot Water,Single,3.1,66,True,0790107489,2025-09-19
+DKUT_027,High Light,Nyeri,Dedan Kimathi University of Technology,1.9,8500,low,Mixed,Balcony;WiFi;Kitchen;Parking;24/7 Security;Furnished;Hot Water;Laundry,Self-contained,3.7,127,True,0711597432,2025-09-19
+DKUT_028,Glory Garden,Nyeri,Dedan Kimathi University of Technology,4.1,13500,mid,Male Only,WiFi;Water Supply;Solar Backup;Kitchen;Laundry,Triple;Double,4.8,113,True,0720084233,2025-09-19
+DKUT_029,Mama Wanyeki,Nyeri,Dedan Kimathi University of Technology,0.9,15500,high,Mixed,WiFi;24/7 Security;Water Supply;CCTV;Laundry;Balcony;Hot Water,Double;Ensuite;Self-contained,4.1,49,False,0726492517,2025-09-19
+DKUT_030,Mary Hostel,Nyeri,Dedan Kimathi University of Technology,2.7,16500,high,Male Only,Hot Water;WiFi;CCTV;Water Supply;Furnished;Kitchen,Single;Ensuite;Self-contained,4.1,14,False,0725048036,2025-09-19
+DKUT_031,Nadia’s Hostel,Nyeri,Dedan Kimathi University of Technology,2.1,14000,mid,Female Only,Balcony;Study Room;Kitchen;Solar Backup;Parking,Triple,5.0,143,True,0721637111,2025-09-19
+DKUT_032,Rose Gate Hostel,Nyeri,Dedan Kimathi University of Technology,1.9,10500,low,Male Only,Furnished;Laundry;24/7 Security;Study Room;Water Supply;CCTV;Solar Backup,Single;Double;Self-contained,5.0,16,False,0723952903,2025-09-19
+DKUT_033,Serene Hostel,Nyeri,Dedan Kimathi University of Technology,2.6,11500,mid,Male Only,Study Room;Solar Backup;Laundry;Balcony,Self-contained,4.5,35,True,0790107489,2025-09-19
+DKUT_034,Venus Glorious Gardens,Nyeri,Dedan Kimathi University of Technology,4.1,10000,low,Mixed,Water Supply;Furnished;WiFi;Laundry;Balcony;Hot Water,Ensuite;Double;Single,3.4,120,True,0724496318,2025-09-19
+DKUT_035,Alwake Hostels,Nyeri,Dedan Kimathi University of Technology,3.1,17000,high,Male Only,24/7 Security;Furnished;Hot Water;WiFi;CCTV;Study Room;Balcony,Single;Triple,3.8,66,False,0722401961,2025-09-19
+DKUT_036,Travons Place,Nyeri,Dedan Kimathi University of Technology,1.2,18500,high,Female Only,Kitchen;Water Supply;Parking;WiFi,Double;Single,4.7,34,True,0704106897,2025-09-19
+DKUT_037,Duns Hostel,Nyeri,Dedan Kimathi University of Technology,1.3,7000,low,Mixed,Kitchen;Study Room;Balcony;WiFi;Laundry;24/7 Security,Single;Double;Triple,4.1,42,False,0724840686,2025-09-19
+DKUT_038,Gerald Gituku,Nyeri,Dedan Kimathi University of Technology,1.1,13500,mid,Female Only,Laundry;Solar Backup;Kitchen;CCTV;Parking;Study Room,Single,3.6,124,True,0720925347,2025-09-19
+DKUT_039,Jowa Investments,Nyeri,Dedan Kimathi University of Technology,3.3,12000,mid,Male Only,Hot Water;24/7 Security;Water Supply;Balcony,Self-contained,4.7,141,False,0727602983,2025-09-19
+DKUT_040,Steward Hostel,Nyeri,Dedan Kimathi University of Technology,4.5,10000,low,Male Only,CCTV;Balcony;24/7 Security;WiFi;Furnished;Parking;Study Room,Triple;Double;Ensuite,4.0,87,True,0720332252,2025-09-19
+DKUT_041,Jutmar Estate,Nyeri,Dedan Kimathi University of Technology,1.1,17000,high,Mixed,Balcony;CCTV;Hot Water;24/7 Security,Double;Self-contained;Ensuite,5.0,108,False,0722668174,2025-09-19
+DKUT_042,Kinzs Hostel,Nyeri,Dedan Kimathi University of Technology,4.1,7500,low,Male Only,Furnished;Study Room;WiFi;Hot Water,Single,4.1,120,True,0725850216,2025-09-19
+DKUT_043,Midways Hostels,Nyeri,Dedan Kimathi University of Technology,1.4,11000,mid,Mixed,Laundry;Solar Backup;WiFi;CCTV,Self-contained,3.2,89,True,0720826047/0721804880,2025-09-19
+DKUT_044,Njengu / Adonai Hostels,Nyeri,Dedan Kimathi University of Technology,3.9,8000,low,Male Only,Parking;Kitchen;Solar Backup;24/7 Security;Hot Water;Laundry,Single;Self-contained;Triple,3.3,49,True,0721876220,2025-09-19
+DKUT_045,Josani Hostels,Nyeri,Dedan Kimathi University of Technology,3.5,7000,low,Mixed,Hot Water;Water Supply;Furnished;Kitchen,Self-contained;Double;Ensuite,3.2,90,True,0721217500,2025-09-19
+DKUT_046,Mountain Top,Nyeri,Dedan Kimathi University of Technology,3.9,12500,mid,Male Only,Hot Water;Study Room;CCTV;Kitchen;Parking;Balcony;WiFi;Laundry,Ensuite,3.4,10,True,0721719974,2025-09-19
+DKUT_047,Prestige Ladies/Men Hostels,Nyeri,Dedan Kimathi University of Technology,2.3,14500,mid,Female Only,Study Room;Laundry;Furnished;Solar Backup,Ensuite;Double;Triple,3.2,17,True,0722678450/0714485884,2025-09-19
+DKUT_048,Riverside Hostels,Nyeri,Dedan Kimathi University of Technology,1.0,17500,high,Female Only,WiFi;Solar Backup;Furnished;CCTV;Study Room,Self-contained;Single,3.7,26,False,0702577250,2025-09-19

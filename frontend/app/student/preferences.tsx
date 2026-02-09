@@ -17,16 +17,16 @@ const FACILITIES = ["WiFi", "Water", "Security", "Parking", "Laundry"];
 
 /* === Derived from Dataset === */
 const BUDGET_OPTIONS = [
-  { label: "Low (≤ 10,500 KES)", value: 10500 },
-  { label: "Mid (≤ 14,500 KES)", value: 14500 },
-  { label: "High (≤ 20,000 KES)", value: 20000 },
+  { label: "Low (below 10,500 KES)", value: 10500 },
+  { label: "Mid (10,501 - 14,500 KES)", value: 14500 },
+  { label: "High (14,501 - 20,000 KES)", value: 20000 },
 ];
 
 const DISTANCE_OPTIONS = [
-  { label: "≤ 1 km", value: 1 },
-  { label: "≤ 2 km", value: 2 },
-  { label: "≤ 3 km", value: 3 },
-  { label: "≤ 5 km", value: 5 },
+  { label: "0 - 1 km", value: 1 },
+  { label: "1.1 - 2 km", value: 2 },
+  { label: "2.1 - 3 km", value: 3 },
+  { label: "3.1 - 5 km", value: 5 },
 ];
 
 const ROOM_TYPES = [
@@ -55,6 +55,7 @@ export default function PreferencesScreen() {
   };
 
   const handleSubmit = async () => {
+    // Validate required fields
     if (!maxPrice || !maxDistance || !roomType) {
       Alert.alert("Missing Fields", "Please fill all required fields");
       return;
@@ -69,16 +70,24 @@ export default function PreferencesScreen() {
         facilities: selectedFacilities,
       };
 
-      const results = await getRecommendations(
-        preferences,
-        {
-          maxPrice: Number(maxPrice),
-          maxDistance: Number(maxDistance),
-          roomType,
-          facilities: selectedFacilities,
-        }
-      );
+      console.log("Submitting preferences:", preferences);
 
+      // Call the recommendation service
+      const results = await getRecommendations(preferences);
+
+      console.log(`Received ${results.length} recommendations`);
+
+      if (!results || results.length === 0) {
+        Alert.alert(
+          "No Results",
+          "No hostels match your preferences. Try adjusting your criteria.",
+          [{ text: "OK" }]
+        );
+        setLoading(false);
+        return;
+      }
+
+      // Navigate to recommendations screen with results
       router.push({
         pathname: "/student/recommendations",
         params: {
@@ -86,7 +95,12 @@ export default function PreferencesScreen() {
         },
       });
     } catch (error: any) {
-      Alert.alert("Error", error.message || "Failed to get recommendations");
+      console.error("Error getting recommendations:", error);
+      Alert.alert(
+        "Error",
+        error.message || "Failed to get recommendations. Please try again.",
+        [{ text: "OK" }]
+      );
     } finally {
       setLoading(false);
     }
@@ -105,7 +119,7 @@ export default function PreferencesScreen() {
 
         {/* === Budget Dropdown === */}
         <View style={styles.section}>
-          <Text style={styles.label}>Maximum Budget</Text>
+          <Text style={styles.label}>Maximum Budget *</Text>
           <View style={styles.pickerWrapper}>
             <Picker
               selectedValue={maxPrice}
@@ -125,7 +139,7 @@ export default function PreferencesScreen() {
 
         {/* === Distance Dropdown === */}
         <View style={styles.section}>
-          <Text style={styles.label}>Maximum Distance</Text>
+          <Text style={styles.label}>Maximum Distance *</Text>
           <View style={styles.pickerWrapper}>
             <Picker
               selectedValue={maxDistance}
@@ -145,7 +159,7 @@ export default function PreferencesScreen() {
 
         {/* === Room Type Dropdown === */}
         <View style={styles.section}>
-          <Text style={styles.label}>Preferred Room Type</Text>
+          <Text style={styles.label}>Preferred Room Type *</Text>
           <View style={styles.pickerWrapper}>
             <Picker
               selectedValue={roomType}
@@ -161,7 +175,7 @@ export default function PreferencesScreen() {
 
         {/* === Facilities === */}
         <View style={styles.section}>
-          <Text style={styles.label}>Facilities</Text>
+          <Text style={styles.label}>Facilities (Optional)</Text>
           <View style={styles.facilityContainer}>
             {FACILITIES.map((facility) => {
               const selected = selectedFacilities.includes(facility);

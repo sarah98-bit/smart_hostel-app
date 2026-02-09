@@ -71,7 +71,7 @@ export default function PaymentScreen() {
 
       <View style={styles.paymentBox}>
         <Text style={styles.label}>Payment Method</Text>
-        <Text style={styles.method}>M-Pesa (STK Push)</Text>
+        <Text style={styles.method}>M-Pesa (Prompt)</Text>
         <Text style={styles.note}>
           You will receive a prompt on your phone to authorize the payment.
         </Text>
