@@ -40,9 +40,7 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (!error.response) {
-      return Promise.reject(
-        new Error("Network error. Check your connection.")
-      );
+      return Promise.reject(new Error("Network error. Check your connection."));
     }
 
     if (error.response.status === 401) {
@@ -50,12 +48,13 @@ api.interceptors.response.use(
       router.replace("/auth/login");
     }
 
-    return Promise.reject(
+    // ✅ Reject with a proper Error object so catch blocks can read .message
+    const message =
       error.response.data?.message ||
-        error.response.data ||
-        error.message ||
-        "Something went wrong"
-    );
+      error.message ||
+      "Something went wrong";
+
+    return Promise.reject(new Error(message));
   }
 );
 

@@ -32,14 +32,14 @@ export default function RecommendationsScreen() {
     }
   }, [params.data]);
 
-  const handleBookNow = (hostel: HostelRecommendation) => {
+  const handleBookNow = (item: HostelRecommendation) => {
     // Navigate directly to booking screen
     router.push({
       pathname: "/student/booking",
       params: {
-        hostelId: hostel.hostel_id,
-        name: hostel.name,
-        price: hostel.price_kes_per_month.toString(),
+        hostelId: item.hostel_id,
+        name: item.name,
+        price: item.price_kes_per_month.toString(),
       },
     });
   };
@@ -179,7 +179,7 @@ export default function RecommendationsScreen() {
         <FlatList
           data={recommendations}
           renderItem={renderHostelCard}
-          keyExtractor={(item) => item.hostel_id}
+         keyExtractor={(item, index) => `${item.hostel_id}-${index}`}
           contentContainerStyle={styles.listContainer}
           showsVerticalScrollIndicator={true}
           bounces={true}

@@ -7,12 +7,11 @@ import hostelRoutes from "./modules/hostels/hostel.routes";
 import bookingRoutes from "./modules/bookings/booking.routes";
 import paymentRoutes from "./modules/payments/payment.routes";
 import recommendationRoutes from "./modules/recommendations/recommendation.routes";
-
+import profileRoutes from "./modules/profiles/profile.routes"; // ✅ ADD THIS
 
 const router = Router();
 
 // Public
-
 router.use("/auth", authRoutes);
 router.use("/hostels", hostelRoutes);
 
@@ -22,6 +21,6 @@ router.use("/preferences", preferenceRoutes);
 router.use("/bookings", bookingRoutes);
 router.use("/payments", paymentRoutes);
 router.use("/recommendations", recommendationRoutes);
-
+router.use("/profiles", profileRoutes); // ✅ ADD THIS
 
 export default router;

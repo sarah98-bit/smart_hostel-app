@@ -11,7 +11,7 @@ interface PreferenceInput {
 }
 
 interface MLRecommendation {
-  hostel_id: string;
+  hostel_id: string; // This comes as "DKUT_032" from ML API
   name: string;
   price_kes_per_month: number;
   distance_km: number;
@@ -54,8 +54,44 @@ export class RecommendationService {
 
       console.log(`Received ${response.data.length} recommendations from ML API`);
 
-      // Return the ML recommendations
-      return response.data;
+      // ✅ FIX: Map ML API results to use database UUIDs
+      const hostelRepo = AppDataSource.getRepository(Hostel);
+      
+      const enrichedRecommendations = await Promise.all(
+        response.data.map(async (rec) => {
+          // The ML API returns hostel_id as a custom string like "DKUT_032"
+          // We need to find the corresponding hostel in our database by name
+          // since we don't have a hostel_id column
+          
+          const hostel = await hostelRepo.findOne({
+            where: { name: rec.name }
+          });
+
+          if (!hostel) {
+            console.warn(`Hostel "${rec.name}" (ML ID: ${rec.hostel_id}) not found in database`);
+            return null;
+          }
+
+          // Return with the actual database UUID
+          return {
+            hostel_id: hostel.id, // ✅ Replace ML's custom ID with database UUID
+            name: rec.name,
+            price_kes_per_month: rec.price_kes_per_month,
+            distance_km: rec.distance_km,
+            room_types: rec.room_types,
+            facilities: rec.facilities,
+            rating: hostel.rating, // Include rating from database
+            score: rec.score,
+          };
+        })
+      );
+
+      // Filter out any null values (hostels not found)
+      const validRecommendations = enrichedRecommendations.filter(rec => rec !== null);
+      
+      console.log(`Successfully mapped ${validRecommendations.length} recommendations to database UUIDs`);
+      
+      return validRecommendations;
     } catch (error) {
       console.error("Error calling ML API:", error);
 
@@ -110,7 +146,7 @@ export class RecommendationService {
       score += (hostel.rating / 5) * 1;
 
       return {
-        hostel_id: hostel.id,
+        hostel_id: hostel.id, // ✅ Use database UUID
         name: hostel.name,
         price_kes_per_month: hostel.price_kes_per_month,
         distance_km: hostel.distance_km,

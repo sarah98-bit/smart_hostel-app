@@ -7,6 +7,7 @@ import { Preference } from "../modules/preferences/preference.entity";
 import { Booking } from "../modules/bookings/booking.entity";
 import { Payment } from "../modules/payments/payment.entity";
 import dotenv from "dotenv";
+import { Profile } from "../modules/profiles/profile.entity";
 
 dotenv.config();  
 /**
@@ -37,6 +38,7 @@ export const AppDataSource = new DataSource({
     Preference,
     Booking,
     Payment,
+    Profile,
   ],
 
   migrations: ["src/migrations/*.ts"],

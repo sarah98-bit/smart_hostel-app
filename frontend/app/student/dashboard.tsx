@@ -55,6 +55,11 @@ export default function StudentDashboard() {
             subtitle="Reserve your preferred room now."
             onPress={() => router.push("/student/booking")}
           />
+                    <Card
+            title="👤 My Profile"
+            subtitle="View and update your profile information."
+            onPress={() => router.push("/student/profile")}
+          />
 
           <Card
             title="💳 Make Payment"
